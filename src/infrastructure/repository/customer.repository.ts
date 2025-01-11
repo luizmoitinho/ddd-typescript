@@ -55,13 +55,17 @@ export default class CustomerRepository implements CustomerRepositoryInterface{
             model.id,
             model.name,
         )
-
-        customer.Address = new Address(
+        customer.addRewardPoints(model.rewardPoints)
+        customer.changeAddress(new Address(
             model.street,
             model.number,
             model.zipCode,
             model.city
-        )
+        ))
+
+        if(model.active){
+            customer.activate()
+        }
 
         return customer
     }
@@ -74,13 +78,18 @@ export default class CustomerRepository implements CustomerRepositoryInterface{
                     model.id,
                     model.name,
                 )
-        
-                customer.Address = new Address(
+                customer.addRewardPoints(model.rewardPoints)
+                customer.changeAddress(new Address(
                     model.street,
                     model.number,
                     model.zipCode,
                     model.city
-                )
+                ))
+
+                if(model.active){
+                    customer.activate()
+                }
+
                 return customer
             }
         )
