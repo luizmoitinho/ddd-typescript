@@ -9,13 +9,12 @@ describe('Product respository test', () => {
         sequelize =  new Sequelize(
             {
                 dialect: 'sqlite',
-                storage: 'memory',
+                storage: ':memory:',
                 logging: false,
-                sync: { force: true}
             }
         );
         sequelize.addModels([ProductModel])
-        await sequelize.sync()
+        await sequelize.sync({ force: true})
     })
 
     afterEach( async() => {

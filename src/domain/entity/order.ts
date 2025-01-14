@@ -14,6 +14,18 @@ export default class Order {
         this.validate()
     }
 
+    get items(): OrderItem[] {
+        return this._items
+    }
+
+    get id(): string {
+        return this._id
+    }
+
+    get customerId(): string{
+        return this._customerId
+    }
+
     total(): number{
         return Number(
             (this._items.reduce((acc, item) => acc + item.price, 0)).toFixed(2)
