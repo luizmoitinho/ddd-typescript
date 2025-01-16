@@ -26,6 +26,10 @@ export default class Order {
         return this._customerId
     }
 
+    changeItems(items: OrderItem[]){
+        this._items = items
+    }
+
     total(): number{
         return Number(
             (this._items.reduce((acc, item) => acc + item.price, 0)).toFixed(2)
