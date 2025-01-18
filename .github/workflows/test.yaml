@@ -29,5 +29,5 @@ jobs:
 
       - name: Test
         run: |
-          make npm test
+          make test
     
