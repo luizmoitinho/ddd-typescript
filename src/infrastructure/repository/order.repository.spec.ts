@@ -107,7 +107,6 @@ describe('Order respository test', () => {
                 "items"
             ]
         })
-
  
         expect(orderModel.toJSON()).toStrictEqual({
             id: '123',
@@ -132,5 +131,64 @@ describe('Order respository test', () => {
                 }
             ]
         })
+    })
+
+    it('should get order by id', async() => {
+        //arrange
+        const customerRepository = new CustomerRepository();
+        const productRepository = new ProductRepository();
+        const orderRepository = new OrderRepository()
+
+        const customer = new Customer("123", "John");
+        const address = new Address('Street 1', 1, 'ZipCode 1', 'City 1');
+
+        customer.changeAddress(address);
+        await customerRepository.create(customer);
+
+        const productOne = new Product('product-1', 'Product 1', 10);
+        await productRepository.create(productOne)
+        const firstItem = new OrderItem('item-1', productOne.name, productOne.price, productOne.id, 2)
+        const secondItem = new OrderItem('item-2', productOne.name, productOne.price, productOne.id, 3)
+
+        const order = new Order('123', customer.id, [firstItem, secondItem])
+        await orderRepository.create(order)
+
+        //act
+        const got = await orderRepository.find('123')
+
+        //assert
+        expect(got).toEqual(order)
+    })
+
+    it('should get all orders', async() => {
+        //arrange
+        const customerRepository = new CustomerRepository();
+        const productRepository = new ProductRepository();
+        const orderRepository = new OrderRepository()
+
+        const customer = new Customer("123", "John");
+        customer.changeAddress(new Address('Street 1', 1, 'ZipCode 1', 'City 1'));
+        await customerRepository.create(customer);
+
+        const customer2 = new Customer("1234", "Apache");
+        customer2.changeAddress(new Address('Street 2', 2, 'ZipCode 2', 'City 2'));
+        await customerRepository.create(customer2);
+
+        const productOne = new Product('product-1', 'Product 1', 10);
+        await productRepository.create(productOne)
+        const firstItem = new OrderItem('item-1', productOne.name, productOne.price, productOne.id, 2)
+        const secondItem = new OrderItem('item-2', productOne.name, productOne.price, productOne.id, 3)
+
+        const order = new Order('123', customer.id, [firstItem])
+        await orderRepository.create(order)
+
+        const order2 = new Order('124', customer2.id, [secondItem])
+        await orderRepository.create(order2)
+
+        //act
+        const got = await orderRepository.findAll()
+
+        //assert
+        expect(got).toEqual([order, order2])
     })
 });
