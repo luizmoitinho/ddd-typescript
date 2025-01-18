@@ -25,7 +25,7 @@ export default class OrderRepository implements OrderRepositoryInterface {
                 }
             )
         } catch (error) {
-            throw new Error('error creating a new order: '+ error)
+            throw new Error('error creating a new order')
         }
     }
 
@@ -67,7 +67,7 @@ export default class OrderRepository implements OrderRepositoryInterface {
             await transaction.commit()
 
         } catch (error) {
-            throw new Error(`error when trying to update order: ${error}`)
+            throw new Error(`error when trying to update order`)
         }
     }
 
