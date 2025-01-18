@@ -73,6 +73,21 @@ describe('Order respository test', () => {
         })
     })
 
+    it('should throw error when trying create an invalid order', async () =>{
+        const productRepository = new ProductRepository();
+        const orderRepository = new OrderRepository()
+
+        const product = new Product('123', 'Product 1', 10);
+        await productRepository.create(product)
+        
+        const orderItem = new OrderItem('1', product.name, product.price, product.id, 2)
+        const order = new Order('123', '1', [orderItem])
+        
+        await expect(
+                orderRepository.create(order)
+        ).rejects.toThrow('error creating a new order')
+    })
+
     it('should update a existent order', async() =>{
         //arrange
         const customerRepository = new CustomerRepository();
@@ -133,6 +148,22 @@ describe('Order respository test', () => {
         })
     })
 
+    it('should throw error when trying update an inexistent order', async () =>{
+        const customerRepository = new CustomerRepository();
+        const productRepository = new ProductRepository();
+        const orderRepository = new OrderRepository()
+
+        const product = new Product('123', 'Product 1', 10);
+        await productRepository.create(product)
+        
+        const orderItem = new OrderItem('1', product.name, product.price, product.id, 2)
+        const order = new Order('123', '1', [orderItem])
+        
+        await expect(
+                orderRepository.update(order)
+        ).rejects.toThrow('error when trying to update order')
+    })
+
     it('should get order by id', async() => {
         //arrange
         const customerRepository = new CustomerRepository();
@@ -158,6 +189,16 @@ describe('Order respository test', () => {
 
         //assert
         expect(got).toEqual(order)
+    })
+
+    it('should throw error when order not found', async() => {
+        //arrange
+        const orderRepository = new OrderRepository()
+
+        //assert
+        await expect(
+            orderRepository.find('123')
+        ).rejects.toThrow('order not found')
     })
 
     it('should get all orders', async() => {
@@ -190,5 +231,15 @@ describe('Order respository test', () => {
 
         //assert
         expect(got).toEqual([order, order2])
+    })
+
+    it('should throw error when there are not orders', async() => {
+        //arrange
+        const orderRepository = new OrderRepository()
+
+        //assert
+        await expect(
+            orderRepository.findAll() 
+        ).rejects.toThrow('orders not found')
     })
 });

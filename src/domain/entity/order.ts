@@ -32,7 +32,7 @@ export default class Order {
 
     total(): number{
         return Number(
-            (this._items.reduce((acc, item) => acc + item.price, 0)).toFixed(2)
+            (this._items.reduce((acc, item) => acc + item.total, 0)).toFixed(2)
         )
     }
 
