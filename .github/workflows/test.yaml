@@ -1,0 +1,33 @@
+name: Quality
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: branch name
+        
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 
+        with:
+          fetch-depth: 0
+
+      - name: Setup
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af 
+        with:
+          node-version: 'lts/*'
+
+      - name: Install
+        run: |
+          make install
+
+      - name: Test
+        run: |
+          make npm test
+    
