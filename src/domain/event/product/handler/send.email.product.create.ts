@@ -3,6 +3,6 @@ import { EventInterface } from "../../@shared/event.interface";
 
 export class SendEmailWhenProductIsCreatedHandler implements EventHandlerInterface{
     handle(event: EventInterface): void {
-        console.log(`Sending email to ${event.eventData?.email}`)
+        console.log(`Sending email to ${event.eventData?.customer?.email}`)
     }
 }
