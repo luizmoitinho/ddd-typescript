@@ -1,4 +1,8 @@
 import { CustomerChangeAddress } from "../event/customer/customer.changed.address.event"
+import { CustomerCreatedEvent } from "../event/customer/customer.created.event"
+import { EnviaConsoleLogHandler } from "../event/customer/handler/console.log.customer.changed.address"
+import { EnviaConsoleLog1Handler } from "../event/customer/handler/console.log1.customer.created"
+import { EnviaConsoleLog2Handler } from "../event/customer/handler/console.log2.customer.created"
 import { Address } from "./address"
 import { Customer } from "./customer"
 
@@ -65,7 +69,8 @@ describe('Customer unit tests', () => {
     it('should change address and handle an event', () =>{
         //arrange
         let customer = new Customer("123", "John");
-        const spyEventHandler = jest.spyOn(customer.changeAddressHandler, 'handle');
+        const spyEventHandler = jest.spyOn(EnviaConsoleLogHandler.prototype, 'handle');
+        
         const want = new CustomerChangeAddress({
             id:'123',
             nome:'John',
@@ -83,11 +88,14 @@ describe('Customer unit tests', () => {
 
     it('should  handle two events when new Customer is created', () =>{
         //arrange
-        let customer = new Customer("123", "John");
-        const spyEventHandler1 = jest.spyOn(customer.consoleLog1Handler, 'handle');
-        const spyEventHandler2 = jest.spyOn(customer.consoleLog2Handler, 'handle');
+        const spyEventHandler1 = jest.spyOn(EnviaConsoleLog1Handler.prototype, 'handle');      
+        const spyEventHandler2 = jest.spyOn(EnviaConsoleLog2Handler.prototype, 'handle');      
 
-        expect(spyEventHandler1).toHaveBeenCalledWith({})
-        expect(spyEventHandler2).toHaveBeenCalledWith({})
+        //act
+        let customer = new Customer("123", "John");
+
+        //assert
+        expect(spyEventHandler1).toHaveBeenCalled();
+        expect(spyEventHandler2).toHaveBeenCalled()
     })
 })

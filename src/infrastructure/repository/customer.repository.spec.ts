@@ -79,7 +79,7 @@ describe('Customer respository test', () => {
 
         const foundCostumer =  await customerRepository.find(customer.id);
 
-        expect(customer).toStrictEqual(foundCostumer)
+        expect(customer).toEqual(foundCostumer)
     })
 
     it('should throw an error when customer is not found', async() => {

@@ -13,10 +13,10 @@ export class Customer {
     private _activate: boolean = false;
     private _rewardPoints: number = 0;
 
-    private _dispatcher: EventDispatcher;
-    private _eventChangeAddressHandler: EnviaConsoleLogHandler;
-    private _eventEnviaConsoleLog1Handler: EnviaConsoleLog1Handler;
-    private _eventEnviaConsoleLog2Handler: EnviaConsoleLog2Handler;
+    private _dispatcher: EventDispatcher = new EventDispatcher();
+    private _changeAddressHandler: EnviaConsoleLogHandler = new EnviaConsoleLogHandler();
+    private _firstHandler: EnviaConsoleLog1Handler = new EnviaConsoleLog1Handler();
+    private _secondHandler: EnviaConsoleLog2Handler = new EnviaConsoleLog2Handler();
 
     constructor(id: string, name: string){
         this._id = id;
@@ -24,14 +24,9 @@ export class Customer {
 
         this.validate()
 
-        this._dispatcher = new EventDispatcher()
-        this._eventChangeAddressHandler = new EnviaConsoleLogHandler();
-        this._eventEnviaConsoleLog1Handler = new EnviaConsoleLog1Handler();
-        this._eventEnviaConsoleLog2Handler = new EnviaConsoleLog2Handler();
-
-        this._dispatcher.register('CustomerChangeAddress', this._eventChangeAddressHandler);
-        this._dispatcher.register('CustomerCreatedEvent', this._eventEnviaConsoleLog2Handler);
-        this._dispatcher.register('CustomerCreatedEvent', this._eventEnviaConsoleLog1Handler);
+        this._dispatcher.register('CustomerChangeAddress', this._changeAddressHandler);
+        this._dispatcher.register('CustomerCreatedEvent', this._firstHandler);
+        this._dispatcher.register('CustomerCreatedEvent', this._secondHandler);
 
         this._dispatcher.notify(new CustomerCreatedEvent({}));
     }
@@ -92,18 +87,6 @@ export class Customer {
         });
 
         this._dispatcher.notify(event);
-    }
-
-    get changeAddressHandler(): EnviaConsoleLogHandler {
-        return this._eventChangeAddressHandler;
-    } 
-
-    get consoleLog1Handler(): EnviaConsoleLog2Handler {
-        return this._eventEnviaConsoleLog1Handler;
-    } 
-
-    get consoleLog2Handler(): EnviaConsoleLog2Handler {
-        return this._eventEnviaConsoleLog2Handler;
     }
 
     set Address(address: Address){
