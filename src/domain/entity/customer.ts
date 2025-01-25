@@ -1,3 +1,9 @@
+import { EventDispatcher } from '../event/@shared/event.dispatcher';
+import { CustomerChangeAddress } from '../event/customer/customer.changed.address.event';
+import { CustomerCreatedEvent } from '../event/customer/customer.created.event';
+import { EnviaConsoleLogHandler } from '../event/customer/handler/console.log.customer.changed.address';
+import { EnviaConsoleLog1Handler } from '../event/customer/handler/console.log1.customer.created';
+import { EnviaConsoleLog2Handler } from '../event/customer/handler/console.log2.customer.created';
 import { Address } from './address';
 
 export class Customer {
@@ -7,10 +13,27 @@ export class Customer {
     private _activate: boolean = false;
     private _rewardPoints: number = 0;
 
+    private _dispatcher: EventDispatcher;
+    private _eventChangeAddressHandler: EnviaConsoleLogHandler;
+    private _eventEnviaConsoleLog1Handler: EnviaConsoleLog1Handler;
+    private _eventEnviaConsoleLog2Handler: EnviaConsoleLog2Handler;
+
     constructor(id: string, name: string){
         this._id = id;
         this._name = name;
+
         this.validate()
+
+        this._dispatcher = new EventDispatcher()
+        this._eventChangeAddressHandler = new EnviaConsoleLogHandler();
+        this._eventEnviaConsoleLog1Handler = new EnviaConsoleLog1Handler();
+        this._eventEnviaConsoleLog2Handler = new EnviaConsoleLog2Handler();
+
+        this._dispatcher.register('CustomerChangeAddress', this._eventChangeAddressHandler);
+        this._dispatcher.register('CustomerCreatedEvent', this._eventEnviaConsoleLog2Handler);
+        this._dispatcher.register('CustomerCreatedEvent', this._eventEnviaConsoleLog1Handler);
+
+        this._dispatcher.notify(new CustomerCreatedEvent({}));
     }
 
     get id(): string {
@@ -61,6 +84,26 @@ export class Customer {
 
     changeAddress (address: Address){
         this._address =  address;
+
+        const event = new CustomerChangeAddress({
+            id: this._id,
+            nome: this._name,
+            endereco: this._address
+        });
+
+        this._dispatcher.notify(event);
+    }
+
+    get changeAddressHandler(): EnviaConsoleLogHandler {
+        return this._eventChangeAddressHandler;
+    } 
+
+    get consoleLog1Handler(): EnviaConsoleLog2Handler {
+        return this._eventEnviaConsoleLog1Handler;
+    } 
+
+    get consoleLog2Handler(): EnviaConsoleLog2Handler {
+        return this._eventEnviaConsoleLog2Handler;
     }
 
     set Address(address: Address){
