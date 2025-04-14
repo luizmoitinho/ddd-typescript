@@ -40,4 +40,24 @@ describe('Unit test to create customer use case', ()=>{
         expect(got).toEqual(expected)
 
     })
+
+    it("should thrown an error when name is missing", async()=>{
+        const input = inputCustomerDto
+        input.name = "";
+
+        const customerRepository = customerMockRepository();
+        const customerCreateUseCase = new CreateCustomerUseCase(customerRepository)
+
+        await expect(customerCreateUseCase.execute(input)).rejects.toThrow("name is required")    
+    });
+
+    it("should thrown an error when street is missing", async()=>{
+        const input = inputCustomerDto
+        input.address.street = "";
+
+        const customerRepository = customerMockRepository();
+        const customerCreateUseCase = new CreateCustomerUseCase(customerRepository)
+
+        await expect(customerCreateUseCase.execute(input)).rejects.toThrow("street is required")    
+    });
 })

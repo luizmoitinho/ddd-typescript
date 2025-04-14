@@ -17,6 +17,9 @@ export class CreateCustomerUseCase {
             input.name,
             new Address(input.address.street, input.address.number, input.address.zipCode, input.address.city)
         );
+
+        customer.validate()
+
         await this.customerRepository.create(customer)
 
         return <OutputCreateCustomerDto>{
