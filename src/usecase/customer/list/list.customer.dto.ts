@@ -1,8 +1,5 @@
-export interface InputFindCustomerDto{
-    id: string;
-};
 
-export interface OutputFindCustomerDto{
+ type Customer = {
     id: string;
     name: string;
     address: {
@@ -12,3 +9,9 @@ export interface OutputFindCustomerDto{
         zipCode: string;
     };
 };
+
+export interface InputListCustomerDto{}
+
+export interface OuputListCustomerDto{
+    customers: Customer[] 
+}
