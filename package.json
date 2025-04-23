@@ -11,10 +11,15 @@
   },
   "scripts": {
     "test": "npm run tsc -- --noEmit && jest",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "dev": "nodemon src/infrastructure/api/server.ts"
   },
   "dependencies": {
+    "@types/express": "^5.0.1",
     "@types/uuid": "^10.0.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.9",
     "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.5",
     "sequelize-typescript": "^2.1.6",
