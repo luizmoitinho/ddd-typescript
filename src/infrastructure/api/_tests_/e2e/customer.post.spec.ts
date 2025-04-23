@@ -1,7 +1,7 @@
 import {app, sequelize} from '../../express'
 import request from 'supertest'
 
-describe('E2E test for customer', () =>{
+describe('E2E post test for customer', () =>{
     beforeEach(async()=>{
         await sequelize.sync(
             {
@@ -35,7 +35,17 @@ describe('E2E test for customer', () =>{
         expect(response.body.address.city).toBe("City")
         expect(response.body.address.zipCode).toBe("1234-123")
         expect(response.body.address.number).toBe(123)
-
     })
-    
+
+    it('should return an internal server error', async()=>{
+        const response = await request(app)
+            .post('/customer')
+            .send(
+                {
+                }
+            )
+
+        expect(response.status).toBe(500)
+        expect(response.body).toEqual({message: 'error when trying save a customer'})
+    })
 })
