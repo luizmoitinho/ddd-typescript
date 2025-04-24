@@ -35,12 +35,15 @@ export default class ProductRepository implements ProductRepositoryInterface{
                 }
             }
         )
-
-        return new Product(
-            model.id,
-            model.name,
-            model.price
-        )
+    
+        if(model){
+            return new Product(
+                model.id,
+                model.name,
+                model.price
+            )
+        }
+        return null   
     }
 
     async findAll(): Promise<Product[]> {
