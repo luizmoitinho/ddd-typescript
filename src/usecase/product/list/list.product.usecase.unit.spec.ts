@@ -1,4 +1,3 @@
-import Product from "../../../domain/product/entity/product"
 import { InputListProductDto, OutputListProductDto } from "./list.product.dto"
 import { ListProductUseCase } from "./list.product.usecase"
 

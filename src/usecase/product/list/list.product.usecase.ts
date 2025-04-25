@@ -12,7 +12,7 @@ export class ListProductUseCase {
     async execute(input: InputListProductDto): Promise<OutputListProductDto>{
         const productList = await this.productRepository.findAll()
 
-        if(productList.length === 0){
+        if(!productList || productList.length === 0){
             throw new Error('products not found')
         }
 
