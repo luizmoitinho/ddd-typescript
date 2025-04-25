@@ -21,8 +21,13 @@ describe('integration test to create product usecase', ()=>{
     });
 
     afterEach(async () => {
+        await ProductModel.destroy({ where: {}, truncate: true })
+    })
+
+    afterAll(async () => {
         await sequelize.close()
     })
+
 
     it('should create product', async ()=>{
         const productRepo = new ProductRepository()
