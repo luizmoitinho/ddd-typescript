@@ -70,7 +70,7 @@ describe('Customer unit tests', () => {
             () => {
                 new Customer("", "")
             }
-        ).toThrow("Customer: name is required,Customer: id is required")
+        ).toThrow("Customer: id is required,Customer: name is required")
     })
 
     it('should change address and handle an event', () =>{
