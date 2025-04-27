@@ -48,7 +48,7 @@ describe('Unit test to create customer use case', ()=>{
         const customerRepository = customerMockRepository();
         const customerCreateUseCase = new CreateCustomerUseCase(customerRepository)
 
-        await expect(customerCreateUseCase.execute(input)).rejects.toThrow("name is required")    
+        await expect(customerCreateUseCase.execute(input)).rejects.toThrow("Customer: name is required")    
     });
 
     it("should thrown an error when street is missing", async()=>{

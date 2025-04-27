@@ -44,7 +44,7 @@ describe('unit test for notifications', ()=>{
         const notification = new Notification()
         const error = {
             message: 'error message',
-            context: 'customer'
+            context: 'customer' 
         }
         notification.addError(error)
 
