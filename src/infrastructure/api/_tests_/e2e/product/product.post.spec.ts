@@ -54,9 +54,9 @@ describe('e2e test to post product', () => {
             .post('/product')
             .send(input)
 
-        expect(response.status).toBe(500)
+        expect(response.status).toBe(422)
         expect(response.body).toEqual(
-            {message: "Error: name is required"}
+            {message: "Product: name is required"}
         )
     })
 
@@ -70,9 +70,9 @@ describe('e2e test to post product', () => {
             .post('/product')
             .send(input)
 
-        expect(response.status).toBe(500)
+        expect(response.status).toBe(422)
         expect(response.body).toEqual(
-            {message: "Error: price must be greater than 0"}
+            {message: "Product: price must be greater than 0"}
         )
     })
 })
