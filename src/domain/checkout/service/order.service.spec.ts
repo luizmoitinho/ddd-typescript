@@ -13,7 +13,7 @@ describe("Order service unit tests", () => {
 
         expect(customer.rewardPoints).toBe(5)
         expect(order.total()).toBe(10)
-    })
+    });
 
     it('should get total of all orders', () => {
         const ordemItem1 = new OrderItem("item-1", "Item 1", 100, "p1", 1)

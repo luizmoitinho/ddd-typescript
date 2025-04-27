@@ -1,4 +1,7 @@
+import Entity from '../../@shared/entity/entity.abstract';
 import { EventDispatcher } from '../../@shared/event/event.dispatcher';
+import { Notification } from '../../@shared/notification/notification';
+import NotificationError from '../../@shared/notification/notification.error';
 import { CustomerChangeAddress } from '../event/customer.changed.address.event';
 import { CustomerCreatedEvent } from '../event/customer.created.event';
 import { EnviaConsoleLogHandler } from '../event/handler/console.log.customer.changed.address';
@@ -6,8 +9,7 @@ import { EnviaConsoleLog1Handler } from '../event/handler/console.log1.customer.
 import { EnviaConsoleLog2Handler } from '../event/handler/console.log2.customer.created';
 import { Address } from '../value-object/address';
 
-export class Customer {
-    private _id: string;
+export class Customer extends Entity {
     private  _name: string;
     private _address!: Address;
     private _activate: boolean = false;
@@ -19,10 +21,15 @@ export class Customer {
     private _secondHandler: EnviaConsoleLog2Handler = new EnviaConsoleLog2Handler();
 
     constructor(id: string, name: string){
+        super()
         this._id = id;
         this._name = name;
 
         this.validate()
+
+        if(this.notification.hasErrors()){
+            throw new NotificationError(this.notification.errors)
+        }
 
         this._dispatcher.register('CustomerChangeAddress', this._changeAddressHandler);
         this._dispatcher.register('CustomerCreatedEvent', this._firstHandler);
@@ -49,11 +56,17 @@ export class Customer {
 
     validate(){
         if(this._name.length === 0 ){
-            throw new Error('name is required')
+            this.notification.addError({
+                context: this.constructor.name,
+                message: 'name is required'
+            })
         }
 
         if(!this._id){
-            throw new Error('id is required')
+            this.notification.addError({
+                context: this.constructor.name,
+                message: 'id is required'
+            })
         }
     }
 

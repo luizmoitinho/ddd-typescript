@@ -11,7 +11,7 @@ describe('Customer unit tests', () => {
             () => {
                 new Customer("123", "")
             }
-        ).toThrow("name is required")
+        ).toThrow("Customer: name is required")
     })
 
     it('should change name', () =>{
@@ -62,7 +62,15 @@ describe('Customer unit tests', () => {
             () => {
                 new Customer("", "Name")
             }
-        ).toThrow("id is required")
+        ).toThrow("Customer: id is required")
+    })
+
+    it('should throw error when id and name are empty', () =>{
+        expect(
+            () => {
+                new Customer("", "")
+            }
+        ).toThrow("Customer: name is required,Customer: id is required")
     })
 
     it('should change address and handle an event', () =>{
