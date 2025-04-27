@@ -1,5 +1,3 @@
-import { Sequelize } from "sequelize-typescript";
-import ProductModel from "../../../../product/repository/sequilize/product.model";
 import { InputCreateProductDto } from "../../../../../usecase/product/create/create.product.dto";
 import { app, sequelize } from "../../../express";
 import  request  from "supertest";
