@@ -60,4 +60,58 @@ describe('E2E get test for customer', () =>{
 
     })
     
+
+    it('should list all customers - xml', async()=>{
+        const response = await request(app)
+            .post('/customer')
+            .send(
+                {
+                    name: "John",
+                    address: {
+                        street: "Street",
+                        city: "City",
+                        zipCode: "1234-123",
+                        number: 123
+                    }
+                }
+        )
+        const responseTwo = await request(app)
+            .post('/customer')
+            .send(
+                {
+                    name: "Jane",
+                    address: {
+                        street: "Street 1",
+                        city: "City 1",
+                        zipCode: "1234-123",
+                        number: 123
+                    }
+                }
+        )
+        
+        expect(response.status).toBe(200)
+        expect(responseTwo.status).toBe(200)
+
+        const listRespose = await request(app)
+            .get("/customer")
+            .set('Accept', 'application/xml')
+            .send()
+
+        expect(listRespose.status).toBe(200)
+        expect(listRespose.text).toContain(`<?xml version="1.0" encoding="UTF-8"?>`);
+        expect(listRespose.text).toContain(`<customers>`);
+        expect(listRespose.text).toContain(`<customer>`);
+        expect(listRespose.text).toContain(`<name>John</name>`);
+        expect(listRespose.text).toContain(`<address>`);
+        expect(listRespose.text).toContain(`<street>Street</street>`);
+        expect(listRespose.text).toContain(`<city>City</city>`);
+        expect(listRespose.text).toContain(`<number>123</number>`);
+        expect(listRespose.text).toContain(`<zip>1234-123</zip>`);
+        expect(listRespose.text).toContain(`</address>`);
+        expect(listRespose.text).toContain(`</customer>`);
+        expect(listRespose.text).toContain(`<name>Jane</name>`);
+        expect(listRespose.text).toContain(`<street>Street 1</street>`);
+        expect(listRespose.text).toContain(`</customers>`);
+
+    })
 })

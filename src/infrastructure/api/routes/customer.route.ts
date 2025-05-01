@@ -4,6 +4,7 @@ import CustomerRepository from '../../customer/repository/sequilize/customer.rep
 import { InputCreateCustomerDto } from '../../../usecase/customer/create/create.customer.dto';
 import ListCustomerUseCase from '../../../usecase/customer/list/list.customer.usecase';
 import { InputListCustomerDto } from '../../../usecase/customer/list/list.customer.dto';
+import { CustomerPresenter } from '../presenters/customer.presenter';
 
 export const customerRoute = express.Router();
 
@@ -35,7 +36,11 @@ customerRoute.get('/', async (req: Request, res: Response) =>{
         const input = <InputListCustomerDto>{ }
 
         const output = await useCase.execute(input)
-        res.send(output)
+        res.format({
+            json: async () => res.send(output),
+            xml: async () => res.send(CustomerPresenter.listXML(output)),
+          });
+
     } catch (error) {
         res.status(500).json({message:'error when trying save a customer'})
     }
