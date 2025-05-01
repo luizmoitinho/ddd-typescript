@@ -103,7 +103,7 @@ describe('integration test for update product use case', () => {
             async () => {
                 await useCase.execute(input)
             }
-        ).rejects.toThrow("price must be greater than 0")
+        ).rejects.toThrow("Product: price must be greater than 0")
     })
 
 })
