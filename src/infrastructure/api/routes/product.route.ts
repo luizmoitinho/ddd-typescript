@@ -4,6 +4,7 @@ import { CreateProductUseCase } from '../../../usecase/product/create/create.pro
 import { InputCreateProductDto } from '../../../usecase/product/create/create.product.dto'
 import { InputListProductDto } from '../../../usecase/product/list/list.product.dto'
 import { ListProductUseCase } from '../../../usecase/product/list/list.product.usecase'
+import NotificationError from '../../../domain/@shared/notification/notification.error'
 
 export const productRoute = express.Router()
 
@@ -26,6 +27,10 @@ productRoute.post('/', async(req: Request, res: Response)=>{
         const output = await createProductUseCase.execute(input)
         res.status(201).send(output)
     } catch (error) {
+        if( error instanceof NotificationError){
+            res.status(422).json({message: error.message})
+            return
+        }
         res.status(500).json({message: `${error}`})
     }
 })

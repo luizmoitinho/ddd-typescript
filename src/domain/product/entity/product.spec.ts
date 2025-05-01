@@ -6,7 +6,7 @@ describe('Product unit tests',  () => {
             () => {
                 const product = new Product('', 'Product 1', 100)
             }
-        ).toThrow('id is required')
+        ).toThrow('Product: id is required')
     })
 
     it('should throw error when name is empty', () =>{
@@ -14,7 +14,7 @@ describe('Product unit tests',  () => {
             () => {
                 const product = new Product('1', '', 100)
             }
-        ).toThrow('name is required')
+        ).toThrow('Product: name is required')
     })
 
     it('should throw error when price less than 0', () =>{
@@ -22,7 +22,15 @@ describe('Product unit tests',  () => {
             () => {
                 const product = new Product('1', 'Product', -9)
             }
-        ).toThrow('price must be greater than 0')
+        ).toThrow('Product: price must be greater than 0')
+    })
+
+    it('should throw error when id, name and price are invalid', () =>{
+        expect(
+            () => {
+                const product = new Product('', '', -9)
+            }
+        ).toThrow('Product: id is required,Product: name is required,Product: price must be greater than 0')
     })
 
     it('should change name', () =>{
